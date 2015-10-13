@@ -7,6 +7,7 @@ using MVCForum.Website.ViewModels;
 
 namespace MVCForum.Website.Controllers
 {
+    [Authorize]
     public partial class BadgeController : BaseController
     {
         private readonly IBadgeService _badgeService;

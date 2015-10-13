@@ -9,6 +9,7 @@ namespace MVCForum.Website.Controllers
 {
     public class BaseInstallController : Controller
     {
+    [Authorize]
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             // If it gets to the complete action reset the 

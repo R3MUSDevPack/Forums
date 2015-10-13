@@ -4,6 +4,7 @@ using MVCForum.Domain.Interfaces.UnitOfWork;
 
 namespace MVCForum.Website.Controllers
 {
+    [Authorize]
     public partial class ClosedController : BaseController
     {
         public ClosedController(ILoggingService loggingService, IUnitOfWorkManager unitOfWorkManager, IMembershipService membershipService, 

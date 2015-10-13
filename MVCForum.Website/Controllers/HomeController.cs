@@ -12,6 +12,7 @@ using RssItem = MVCForum.Domain.DomainModel.RssItem;
 
 namespace MVCForum.Website.Controllers
 {
+    [Authorize]
     public partial class HomeController : BaseController
     {
         private readonly ITopicService _topicService;
