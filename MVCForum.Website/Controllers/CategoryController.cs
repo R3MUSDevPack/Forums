@@ -11,7 +11,6 @@ using MVCForum.Website.ViewModels.Mapping;
 
 namespace MVCForum.Website.Controllers
 {
-    [Authorize]
     public partial class CategoryController : BaseController
     {
         private readonly ICategoryService _categoryService;

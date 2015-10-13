@@ -11,7 +11,6 @@ using MembershipUser = MVCForum.Domain.DomainModel.MembershipUser;
 namespace MVCForum.Website.Controllers
 {
     
-    [Authorize]
     public class VoteController : BaseController
     {
         private readonly IPostService _postService;

@@ -11,7 +11,6 @@ using MVCForum.Website.ViewModels.Mapping;
 
 namespace MVCForum.Website.Controllers
 {
-    [Authorize]
     public partial class FavouriteController :  BaseController
     {
         private readonly ITopicService _topicService;

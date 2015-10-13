@@ -8,7 +8,6 @@ using MVCForum.Website.ViewModels;
 
 namespace MVCForum.Website.Controllers
 {
-    [Authorize]
     public partial class EmailController : BaseController
     {
         private readonly ITopicNotificationService _topicNotificationService;
