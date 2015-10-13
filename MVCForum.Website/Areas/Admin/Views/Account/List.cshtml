@@ -32,7 +32,7 @@
     <tbody>
         @foreach (var user in Model.Users)
         {
-            var disabled = user.Id == Model.Id;
+            var disabled = ((user.Id == Model.Id) && (!user.Roles.Contains("Admin")));
 
             <tr>
                 <td>
@@ -56,7 +56,8 @@
                             var showChecked = user.Roles.Contains(role.RoleName) ? "checked='checked'" : "";
                             var disablecb = disabled ? "disabled='disabled'" : "";
                             <span class="listrolecb">
-                                <input type="radio" name="Roles-@user.Id" value="@role.RoleName" @showChecked @disablecb /> @Html.Raw(role.RoleName)
+                                @*<input type="radio" name="Roles-@user.Id" value="@role.RoleName" @showChecked @disablecb /> @Html.Raw(role.RoleName)*@
+                                <input type="checkbox" name="Roles-@user.Id" value="@role.RoleName" @showChecked @disablecb /> @Html.Raw(role.RoleName)<br />
                             </span>
                         }
                         <input type="hidden" id="userId" value="@user.Id" />
