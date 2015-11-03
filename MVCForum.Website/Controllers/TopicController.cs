@@ -19,6 +19,7 @@ using MembershipUser = MVCForum.Domain.DomainModel.MembershipUser;
 
 namespace MVCForum.Website.Controllers
 {
+    [Authorize]
     public partial class TopicController : BaseController
     {
         private readonly IFavouriteService _favouriteService;
@@ -368,8 +369,26 @@ namespace MVCForum.Website.Controllers
                             topic.Name = StringUtils.GetSafeHtml(_bannedWordService.SanitiseBannedWords(editPostViewModel.Name));
 
                             // See if there is a poll
-                            if (editPostViewModel.PollAnswers != null && editPostViewModel.PollAnswers.Count(x => x != null) > 0)
+                            if ((editPostViewModel.PollAnswers != null) && (editPostViewModel.PollAnswers.Count(x => x != null) > 0) && (permissions[AppConstants.PermissionCreatePolls].IsTicked))
                             {
+                                if(topic.Poll == null)
+                                {
+                                    // Create a new Poll
+                                    var newPoll = new Poll
+                                    {
+                                        User = LoggedOnUser
+                                    };
+
+                                    newPoll.PollAnswers = new List<PollAnswer>();
+
+                                    // Create the poll
+                                    _pollService.Add(newPoll);
+
+                                    // Save the poll in the context so we can add answers
+                                    unitOfWork.SaveChanges();
+                                    topic.Poll = newPoll;
+                                }
+
                                 // Now sort the poll answers, what to add and what to remove
                                 // Poll answers already in this poll.
                                 //var existingAnswers = topic.Poll.PollAnswers.Where(x => postedIds.Contains(x.Id)).ToList();

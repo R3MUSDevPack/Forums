@@ -352,8 +352,16 @@ namespace MVCForum.Website.Application
         {
             if (!string.IsNullOrEmpty(avatar))
             {
-                // Has an avatar image
-                return VirtualPathUtility.ToAbsolute(string.Concat(SiteConstants.UploadFolderPath, userId, "/", avatar, string.Format("?width={0}&crop=0,0,{0},{0}", size)));
+                if(!avatar.StartsWith("data:image/png;base64,")){
+                    // Has an avatar image uploaded
+                    return VirtualPathUtility.ToAbsolute(string.Concat(SiteConstants.UploadFolderPath, userId, "/", avatar, string.Format("?width={0}&crop=0,0,{0},{0}", size)));
+                }
+                else
+                {
+                    //  Stores avatar in db
+                    return avatar;
+                }
+                
             }
             return StringUtils.GetGravatarImage(email, size);
         }

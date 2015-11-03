@@ -23,6 +23,7 @@ using MembershipUser = MVCForum.Domain.DomainModel.MembershipUser;
 
 namespace MVCForum.Website.Controllers
 {
+    [Authorize]
     public partial class MembersController : BaseController
     {
         private readonly IPostService _postService;
@@ -248,6 +249,7 @@ namespace MVCForum.Website.Controllers
         /// Add a new user
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public ActionResult Register()
         {
             if (SettingsService.GetSettings().SuspendRegistration != true)
@@ -603,6 +605,7 @@ namespace MVCForum.Website.Controllers
         /// Log on
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public ActionResult LogOn()
         {
             // Create the empty view model
@@ -624,6 +627,7 @@ namespace MVCForum.Website.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [OverrideAuthorization]
         //[ValidateAntiForgeryToken]
         public ActionResult LogOn(LogOnViewModel model)
         {
@@ -726,7 +730,8 @@ namespace MVCForum.Website.Controllers
 
                 }
 
-                return View(model);
+                //return View(model);
+                return RedirectToAction("logon");
             }
         }
 
@@ -1145,7 +1150,7 @@ namespace MVCForum.Website.Controllers
         {
             var viewModel = new ListLatestMembersViewModel();
             var users = MembershipService.GetLatestUsers(10).ToDictionary(o => o.UserName, o => o.NiceUrl);
-            viewModel.Users = users;
+            
             return PartialView(viewModel);
         }
 
