@@ -1022,7 +1022,8 @@ namespace MVCForum.Website.Controllers
                                                            SiteConstants.ActiveTopicsListSize);
 
                 // Get the Topic View Models
-                var topicViewModels = ViewModelMapping.CreateTopicViewModels(topics, RoleService, UsersRole, LoggedOnUser, SettingsService.GetSettings());
+                var topicViewModels = ViewModelMapping.CreateTopicViewModels(topics, RoleService, UsersRole, LoggedOnUser, 
+                    SettingsService.GetSettings());
 
                 // create the view model
                 var viewModel = new ActiveTopicsViewModel
@@ -1037,7 +1038,7 @@ namespace MVCForum.Website.Controllers
             }
         }
 
-        [OutputCache(Duration = AppConstants.LongCacheTime)]
+        //[OutputCache(Duration = AppConstants.LongCacheTime)]
         [ChildActionOnly]
         public ActionResult HotTopics(DateTime? from, DateTime? to, int? amountToShow)
         {
@@ -1049,10 +1050,12 @@ namespace MVCForum.Website.Controllers
                 }
 
                 // Get the topics
-                var topics = _topicService.GetPopularTopics(from, to, (int)amountToShow);
+                //var topics = _topicService.GetPopularTopics(from, to, (int)amountToShow);
+                var topics = _topicService.GetPopularTopics(from, to);
 
                 // Get the Topic View Models
-                var topicViewModels = ViewModelMapping.CreateTopicViewModels(topics.ToList(), RoleService, UsersRole, LoggedOnUser, SettingsService.GetSettings());
+                var topicViewModels = ViewModelMapping.CreateTopicViewModels(topics.ToList(), RoleService, UsersRole, LoggedOnUser, 
+                    SettingsService.GetSettings()).Take(amountToShow.Value).ToList();
 
                 // create the view model
                 var viewModel = new HotTopicsViewModel

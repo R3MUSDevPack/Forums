@@ -62,7 +62,7 @@ namespace MVCForum.Services
 
             return _topicRepository.GetPopularTopics((DateTime)from, (DateTime)to, amountToShow);
         }
-
+        
         /// <summary>
         /// Create a new topic and also the topic starter post
         /// </summary>

@@ -214,12 +214,18 @@ namespace MVCForum.Website.ViewModels.Mapping
 
             // Create the view models
             var viewModels = new List<TopicViewModel>();
+            
             foreach (var topic in topics)
             {
-                var id = topic.Id;
-                var permission = permissions[topic.Category];
-                var topicPosts = (groupedPosts.Contains(id) ? groupedPosts[id].ToList() : new List<Post>());
-                viewModels.Add(CreateTopicViewModel(topic, permission, topicPosts, null, null, null, null, loggedOnUser, settings));
+                if (permissions.Where(perm =>
+                    perm.Key.Id == topic.Category.Id).ToList().FirstOrDefault().Value.Where(perm =>
+                    perm.Key == "Deny Access").FirstOrDefault().Value.IsTicked != true)
+                {
+                    var id = topic.Id;
+                    var permission = permissions[topic.Category];
+                    var topicPosts = (groupedPosts.Contains(id) ? groupedPosts[id].ToList() : new List<Post>());
+                    viewModels.Add(CreateTopicViewModel(topic, permission, topicPosts, null, null, null, null, loggedOnUser, settings));
+                }
             }
             return viewModels;
         }
