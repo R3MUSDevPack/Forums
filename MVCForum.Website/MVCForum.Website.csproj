@@ -696,7 +696,6 @@
     <Content Include="Content\spectrum\spectrum.css" />
     <Content Include="Content\spectrum\spectrum.js" />
     <Content Include="Content\tinymce.css" />
-    <Content Include="Content\uploads\readme.txt" />
     <Content Include="Installer\Content\arrow-spinner-blue.gif" />
     <Content Include="Installer\Content\Images\logo.png" />
     <Content Include="Installer\Content\Scripts\general.js" />
@@ -1152,6 +1151,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

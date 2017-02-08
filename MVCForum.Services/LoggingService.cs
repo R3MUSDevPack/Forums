@@ -119,6 +119,12 @@ namespace MVCForum.Services
         private static void CheckFileExists(int maxLogSize)
         {
             _maxLogSize = maxLogSize;
+            var dir = _logFileName.Split(new string[] { LogFileNameOnly }, StringSplitOptions.None)[0];
+
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
 
             if (!File.Exists(_logFileName))
             {
