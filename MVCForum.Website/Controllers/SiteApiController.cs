@@ -43,7 +43,10 @@ namespace MVCForum.Website.Controllers
 
             using (var unitOfWork = _unitOfWorkManager.NewUnitOfWork())
             {
-                _topicService.GetAll().FirstOrDefault(t => t.Category == category && t.Name == warName).Solved = true;
+                _topicService.GetAll().Where(t => t.Category == category && t.Name == warName).ToList().ForEach(t =>
+                    t.Solved = true
+                    );
+
                 // Save the changes
                 unitOfWork.SaveChanges();
                 unitOfWork.Commit();
