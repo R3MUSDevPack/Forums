@@ -14,6 +14,9 @@ using MVCForum.IOC;
 using MVCForum.Utilities;
 using MVCForum.Website.Application;
 using MVCForum.Website.ScheduledJobs;
+using System.Web.Http;
+using Newtonsoft.Json.Serialization;
+using System.Net.Http.Headers;
 
 namespace MVCForum.Website
 {
@@ -93,16 +96,40 @@ namespace MVCForum.Website
 
         }
 
+        private void RegAPI(HttpConfiguration config)
+        {
+            config.MapHttpAttributeRoutes();
+            
+            config.Routes.MapHttpRoute(
+                name: "WarDec",
+                routeTemplate: "api/war/add/{name}/{warName}/{warDetails}",
+                defaults: new { controller = "SiteApi", action = "CreateWarTopic", name = UrlParameter.Optional, warName = UrlParameter.Optional, warDetails = UrlParameter.Optional }
+            );
+            config.Routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: "api",
+                defaults: new { controller = "SiteApi", action = "Tofu" }
+            );
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            ((DefaultContractResolver)config.Formatters.JsonFormatter.SerializerSettings.ContractResolver).IgnoreSerializableAttribute = true;
+
+        }
+
         protected void Application_Start()
         {
-            // Register routes
-            AreaRegistration.RegisterAllAreas();
-            RegisterGlobalFilters(GlobalFilters.Filters);
-            RegisterRoutes(RouteTable.Routes);
-
             // Start unity
             var unityContainer = UnityHelper.Start();
             
+            // Register routes
+            AreaRegistration.RegisterAllAreas();
+            RegisterGlobalFilters(GlobalFilters.Filters);
+
+            GlobalConfiguration.Configure(RegAPI);
+
+            GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(unityContainer);
+
+            RegisterRoutes(RouteTable.Routes);
+
             // Run scheduled tasks
             ScheduledRunner.Run(unityContainer);
 
