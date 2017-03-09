@@ -6,6 +6,7 @@ using System.Web.Http;
 using MVCForum.Website.CustomAttributes;
 using System.Web.Routing;
 using System.Net.Http;
+using System.Linq;
 
 namespace MVCForum.Website.Controllers
 {
@@ -15,19 +16,40 @@ namespace MVCForum.Website.Controllers
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IMembershipService _membershipService;
         private readonly ITopicService _topicService;
+        private readonly IPostService _postService;
 
-        public SiteApiController(ICategoryService categoryService, IUnitOfWorkManager unitOfWorkManager, IMembershipService membershipService, ITopicService topicService)
+        public SiteApiController(ICategoryService categoryService, IUnitOfWorkManager unitOfWorkManager, 
+            IMembershipService membershipService, ITopicService topicService, IPostService postService)
         {
             _categoryService = categoryService;
             _unitOfWorkManager = unitOfWorkManager;
             _membershipService = membershipService;
             _topicService = topicService;
+            _postService = postService;
         }
         
         [HttpGet]
         public IHttpActionResult Tofu()
         {
             return Ok("Tofu");
+        }
+
+        [WarAuthorize]
+        [HttpGet]
+        public IHttpActionResult ScrapWar(string warName)
+        {
+            var catId = new Guid("B021A3BE-02C9-46B6-BCC8-A53900AB0A6A");
+            var category = _categoryService.Get(catId);
+
+            using (var unitOfWork = _unitOfWorkManager.NewUnitOfWork())
+            {
+                _topicService.GetAll().FirstOrDefault(t => t.Category == category && t.Name == warName).Solved = true;
+                // Save the changes
+                unitOfWork.SaveChanges();
+                unitOfWork.Commit();
+            }
+
+            return Ok();
         }
         
         [WarAuthorize]

@@ -106,6 +106,11 @@ namespace MVCForum.Website
                 defaults: new { controller = "SiteApi", action = "CreateWarTopic", name = UrlParameter.Optional, warName = UrlParameter.Optional, warDetails = UrlParameter.Optional }
             );
             config.Routes.MapHttpRoute(
+                name: "WarScrap",
+                routeTemplate: "api/war/scrap/{warName}",
+                defaults: new { controller = "SiteApi", action = "ScrapWar", name = UrlParameter.Optional, warName = UrlParameter.Optional, warDetails = UrlParameter.Optional }
+            );
+            config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api",
                 defaults: new { controller = "SiteApi", action = "Tofu" }
